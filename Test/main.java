@@ -33,5 +33,6 @@ public class main extends Server {
     public static void main(String args[]) throws Exception {
         main server = new main();
         server.newServer("127.0.0.1", 24455);
+        server.run();
     }
 }

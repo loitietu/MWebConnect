@@ -28,7 +28,7 @@ public abstract class Server {
     public abstract void close(Session client);
     public abstract void message(Session client, String msg);
     public abstract void create();
-
+    
     public void newServer(String host, int port) throws InterruptedException {
         this.host = host;
         this.port = port;
@@ -66,6 +66,9 @@ public abstract class Server {
                 create();
             }
         };
+    }
+    
+    public void run() {
         Logger.info("WebSocketServer started on " + host + ":" + port);
         server.start();
     }

@@ -46,22 +46,22 @@ server.run();
 
 ### Currently owned events:
 #### onMessage
-This event will be triggered when the player sends a message
+This event will be triggered when the player sends a message.<br>
 (String) message ; (String) sender
 #### onMessageJSON
-This event is triggered when the player sends a message, but it will send a json string.
+This event is triggered when the player sends a message, but it will send a json string.<br>
 (String) json
 #### onBlockPlaced
-This event is triggered when the player places a box.
+This event is triggered when the player places a box.<br>
 (Player) player ; (Block) block
 #### onBlockPlacedJSON
-This event is triggered when the player places a box, but it will send a json string.
+This event is triggered when the player places a box, but it will send a json string.<br>
 (String) json
 #### onBlockBroken
-This event is triggered when the player breaks the box.
+This event is triggered when the player breaks the box.<br>
 (Player) player ; (Block) block
 #### onBlockBrokenJSON
-This event is triggered when the player breaks a box, but it will send a json string.
+This event is triggered when the player breaks a box, but it will send a json string.<br>
 (String) json
  - Note: These events must be monitored with the event variable in the Session.
 

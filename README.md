@@ -1,5 +1,9 @@
 # MWebConnect : Websocket Server for Minecraft (Bedrock Edition)
 
+## Document language
+### [简体中文](README-zh.md)
+### [English](README.md)
+
 ## How to use
 1. Import `MWebConnect.jar` (You can download it in the Release page.).
 
@@ -39,10 +43,10 @@ server.newServer("127.0.0.1", 19132);
 server.run();
 ```
 
-5.So you can connect to the server with the command /connect 127.0.0.1:19132 in Minecraft.
+5. So you can connect to the server with the command /connect 127.0.0.1:19132 in Minecraft.
 
-##Server event
-1. Make sure to import two libraries, com.loistudio.Session and com.loistudio.tools.EventEmitter, before using this function.
+## Server event
+1. Make sure to import two libraries, `com.loistudio.Session` and `com.loistudio.tools.EventEmitter`, before using this function.
 
 ### Currently owned events:
 #### onMessage

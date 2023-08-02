@@ -84,3 +84,20 @@ event.on("message", new EventEmitter.Listener() {
 });
 ```
  - 注意:事件模块只能监听当前变量。如果它是在其他类中创建并发送的，它就不能监听这个变量中的event事件，除非它是在当前变量中发送的
+ 
+## 文件存储模块
+### JsonObject
+ - 再使用之前请确保已经导入了`com.loistudio.file.JsonObject`这个包
+#### open(String path) -> void
+创建一个json文件
+- path {String} 文件路径
+#### set(String key, Object value) -> void
+添加或设置指定key的值
+- key {String} json文件中的key
+- value {Object} key的值
+#### get(String key) -> Object
+获取指定key的值
+- key {String} json文件中的key
+#### delete(String key) -> void
+删除指定key
+- key {String} json文件中的key

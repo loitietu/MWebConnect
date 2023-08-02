@@ -84,3 +84,21 @@ event.on("message", new EventEmitter.Listener() {
 });
 ```
  - Note: the event module can only listen to the current variable. If it is created and sent in other classes, it cannot listen to the sent event in this variable unless it is sent in the current variable.
+
+
+## File storage module
+### JsonObject
+ - Import the package `com.loistudio.file.JsonObject` before using it.
+#### open(String path) -> void
+Create a json file
+- path {String} File path 
+#### set(String key, Object value) -> void
+Add or set a key value to a json file.
+- key {String} Key of json file
+- value {Object} Value of key
+#### get(String key) -> Object
+Gets the value of the specified key.
+- key {String} Key of json file
+#### delete(String key) -> void
+Delete the specified key
+- key {String} Key of json file

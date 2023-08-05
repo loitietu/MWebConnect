@@ -1,12 +1,14 @@
 com/loistudio/file/JsonObject.class
 com/loistudio/Server.class
-com/loistudio/Session$Response.class
+com/loistudio/Session$3.class
 com/loistudio/Block.class
 com/loistudio/Initialization$1.class
 com/loistudio/Server$1.class
 com/loistudio/Player.class
 com/loistudio/tools/EventEmitter$Listener.class
+com/loistudio/Session$2.class
 com/loistudio/Session$CommandCallback.class
+com/loistudio/Session$1.class
 com/loistudio/tools/Logger.class
 com/loistudio/file/MclStatic.class
 com/loistudio/Initialization.class

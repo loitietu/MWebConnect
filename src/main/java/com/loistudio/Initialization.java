@@ -7,9 +7,9 @@ import java.io.*;
 
 public class Initialization {
     public static void init(Session client) {
-        client.subscribe("PlayerMessage", null);
-        client.subscribe("BlockPlaced", null);
-        client.subscribe("BlockBroken", null);
+        client.subscribe("PlayerMessage");
+        client.subscribe("BlockPlaced");
+        client.subscribe("BlockBroken");
         Session.event.on("onJSON", new EventEmitter.Listener() {
             public void execute(Object... args) {
                 JSONObject json = new JSONObject(args[0].toString());
@@ -32,8 +32,8 @@ public class Initialization {
     }
     
     public static void uninit(Session client) {
-        client.unsubscribe("PlayerMessage", null);
-        client.unsubscribe("BlockPlaced", null);
-        client.unsubscribe("BlockBroken", null);
+        client.unsubscribe("PlayerMessage");
+        client.unsubscribe("BlockPlaced");
+        client.unsubscribe("BlockBroken");
     }
 }

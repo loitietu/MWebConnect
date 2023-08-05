@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.concurrent.CountDownLatch;
 import java.time.LocalDateTime;  
 import java.time.format.DateTimeFormatter;
 import java.lang.Runtime;
@@ -38,6 +37,7 @@ public class Session {
     }
     
     public void subscribe(String event, CommandCallback callback) {
+        callback.onResponse(event);
         Set<CommandCallback> listeners = this.eventListeners.get(event);
         if (listeners == null) {
             Map<String, Object> json = new HashMap<>();
@@ -51,6 +51,13 @@ public class Session {
             this.send(jsonStr);
         }
         listeners.add(callback);
+    }
+    
+    public void subscribe(String event) {
+        this.subscribe(event, new CommandCallback() {
+            @Override
+            public void onResponse(String response) {};
+        });
     }
     
     public void unsubscribe(String event, CommandCallback callback) {
@@ -67,6 +74,14 @@ public class Session {
             String jsonStr = new JSONObject(json).toString();
             this.send(jsonStr);
         }
+        callback.onResponse(event);
+    }
+    
+    public void unsubscribe(String event) {
+        this.unsubscribe(event, new CommandCallback() {
+            @Override
+            public void onResponse(String response) {};
+        });
     }
 
     public String sendCommand(String command, CommandCallback callback) {
@@ -79,44 +94,23 @@ public class Session {
         body.put("commandLine", command);       
         json.put("body", body);  
         this.responsers.put(requestId, callback);
-        String jsonStr = new JSONObject(json).toString();  
+        String jsonStr = new JSONObject(json).toString();
+        callback.onResponse(requestId);
         this.send(jsonStr);
         this.Formation.put(requestId, command);
         return requestId;
     }
     
+    public void sendCommand(String command) {
+        this.sendCommand(command, new CommandCallback() {
+            @Override
+            public void onResponse(String response) {};
+        });
+    }
+    
+    @FunctionalInterface
     public interface CommandCallback {
         public void onResponse(String response);
-    }
-    
-    public Response sendCommandSync(String command) throws Exception {
-        Map<String, Object> json = new HashMap<>();
-        Map<String, Object> header = this.buildHeader("commandRequest");
-        String requestId = (String) header.get("requestId");
-        json.put("header", header);
-        Map<String, Object> body = new HashMap<>();  
-        body.put("version", 1);
-        body.put("commandLine", command);       
-        json.put("body", body); 
-        Response response = new Response();
-        CountDownLatch latch = new CountDownLatch(1);
-        this.responsers.put(requestId, response);  
-        String jsonStr = new JSONObject(json).toString();  
-        this.send(jsonStr);
-        latch.await(); 
-        this.Formation.remove(requestId);
-        return response;
-    }
-    
-    class Response implements CommandCallback {
-        String data;
-        @Override
-        public void onResponse(String response) {
-            this.data = response;
-        }
-        synchronized void setResult(String data) {  
-            this.data = data;    
-        }
     }
     
     public String now() {
@@ -127,12 +121,12 @@ public class Session {
     
     public void tellraw(String text, String color) {
         String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", color + this.now() + text))).toString();
-        this.sendCommand(command, null);
+        this.sendCommand(command);
     }
     
     public void tellraw(String text) {
         String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", "§e" + this.now() + text))).toString();
-        this.sendCommand(command, null);
+        this.sendCommand(command);
     }
     
     public String shell(String cmd) {
@@ -154,11 +148,11 @@ public class Session {
     }
     
     public void sendText(String txt) {
-        this.sendCommand("say " + txt, null);
+        this.sendCommand("say " + txt);
     }
     
     public void write(String txt) {
-        this.sendCommand("title @s actionbar " + txt, null);
+        this.sendCommand("title @s actionbar " + txt);
     }
         
     Map<String, Object> buildHeader(String purpose) {

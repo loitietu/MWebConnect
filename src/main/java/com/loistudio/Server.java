@@ -1,3 +1,12 @@
+// ___       ________  ___         
+// |\  \     |\   __  \|\  \        
+// \ \  \    \ \  \|\  \ \  \       
+//  \ \  \    \ \  \\\  \ \  \      
+//   \ \  \____\ \  \\\  \ \  \     
+//    \ \_______\ \_______\ \__\    
+//     \|_______| \ |_______|\ |__|    
+//-------------------MWebConnect-------------------        
+
 package com.loistudio;
 
 import java.io.IOException;
@@ -8,12 +17,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.management.*;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+
+import org.json.JSONObject;
 
 import com.loistudio.tools.Logger;
 import com.loistudio.tools.EventEmitter;
@@ -95,5 +107,30 @@ public abstract class Server {
     
     public String getIp(WebSocket conn) {
         return conn.getRemoteSocketAddress().getAddress().getHostAddress();
+    }
+    
+    public String status() {
+        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+        JSONObject json = new JSONObject();
+        JSONObject java = new JSONObject();
+        JSONObject jvm = new JSONObject();
+        JSONObject cpu = new JSONObject();
+        JSONObject memory = new JSONObject();
+        json.put("name", System.getProperty("os.name"));
+        json.put("version", System.getProperty("os.version"));
+        java.put("compiler", System.getProperty("java.compiler"));
+        java.put("version", System.getProperty("java.version"));
+        jvm.put("version", System.getProperty("java.vm.version"));
+        java.put("jvm", jvm);
+        cpu.put("core", Runtime.getRuntime().availableProcessors());
+        cpu.put("arch", System.getProperty("os.arch"));
+        cpu.put("load", osBean.getSystemLoadAverage());
+        memory.put("total", Runtime.getRuntime().totalMemory());
+        memory.put("free", Runtime.getRuntime().freeMemory());
+        memory.put("max", Runtime.getRuntime().maxMemory());
+        json.put("memory", memory);
+        json.put("java", java);
+        json.put("cpu", cpu);
+        return json.toString();
     }
 }

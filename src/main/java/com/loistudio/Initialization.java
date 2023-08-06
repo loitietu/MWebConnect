@@ -21,10 +21,10 @@ public class Initialization {
                         Session.event.emit("onMessage", body.getString("sender"), body.getString("message"));
                     } else if ("BlockPlaced".equals(header.getString("eventName"))) {
                         Session.event.emit("onBlockPlacedJSON", args[0]);
-                        Session.event.emit("onBlockPlaced", new Player(body.getJSONObject("player")), new Block(body.getJSONObject("block")));
+                        Session.event.emit("onBlockPlaced", new Player(body.getJSONObject("player"), client), new Block(body.getJSONObject("block")));
                     } else if ("BlockBroken".equals(header.getString("eventName"))) {
                         Session.event.emit("onBlockBrokenJSON", args[0]);
-                        Session.event.emit("onBlockBroken", new Player(body.getJSONObject("player")), new Block(body.getJSONObject("block")));
+                        Session.event.emit("onBlockBroken", new Player(body.getJSONObject("player"), client), new Block(body.getJSONObject("block")));
                     }
                 }
             }

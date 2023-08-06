@@ -11,13 +11,15 @@ public class Player {
     private int id;
     private String name;
     private Map<String, Object> position = new HashMap<>();
+    private Session client;
 
-    Player(JSONObject json) {
+    Player(JSONObject json, Session client) {
         this.color = json.getString("color");
         this.dimension = json.getInt("dimension");
         this.id = json.getInt("id");
         this.name = json.getString("name");
         this.position = this.getNestedFieldsMap(json, "position");
+        this.client = client;
     }
     
     public String getColor() {
@@ -38,6 +40,14 @@ public class Player {
     
     public Map<String, Object> getPosition() {
         return this.position;
+    }
+    
+    public void exec(String command) {
+        this.client.sendCommand("execute " + this.name + " ~ ~ ~ " + command);
+    }
+    
+    public void sendMessage(String txt) {
+        this.exec("tellraw @s {\"rawtext\":[{\"text\":\"" + txt + "\"}]}");
     }
     
     private Map<String, Object> getNestedFieldsMap(JSONObject jsonObject, String... fields) {

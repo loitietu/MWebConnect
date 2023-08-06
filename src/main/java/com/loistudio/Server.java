@@ -131,6 +131,6 @@ public abstract class Server {
         json.put("memory", memory);
         json.put("java", java);
         json.put("cpu", cpu);
-        return json.toString();
+        return json.toString(4);
     }
 }

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;  
 import java.time.format.DateTimeFormatter;
 
+import com.loistudio.file.FolderExample;
+
 public class Logger {
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -42,24 +44,10 @@ public class Logger {
         LocalDateTime currentTime = LocalDateTime.now();
         String timestamp = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         String logMsg = String.format("%s%s%s [%s%s%s] %s", ANSI_BLUE, timestamp, ANSI_RESET, color, level, ANSI_RESET, msg); 
+        String logFileMsg = String.format("%s [%s] %s", timestamp, level, msg);
         System.out.println(logMsg);
         if (logFile != null && getLevelNumber(level) >= logLevel) {
-            FileWriter writer = null;
-            try {
-                File log = new File(logFile);
-                writer = new FileWriter(log, true);
-                writer.write(logMsg);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (writer != null) {
-                    try {
-                        writer.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            FolderExample.writeAddFile(logFile, logFileMsg + "\n");
         }
     }
 

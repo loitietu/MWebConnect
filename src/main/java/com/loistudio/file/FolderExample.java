@@ -1,7 +1,6 @@
 package com.loistudio.file;
 
 import java.io.*;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -18,11 +17,41 @@ public class FolderExample {
         File folder = new File(path);
         folder.mkdirs();
     }
+    
+    public static String readFile(String path) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while((line = br.readLine()) != null) {
+                content.append(line);
+                content.append("\n"); 
+            }
+            br.close();
+            return content.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static void writeFile(String fileName, String content) {
         try {
             File file = new File(fileName);
             FileWriter writer = new FileWriter(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(content);
+            bufferedWriter.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void writeAddFile(String fileName, String content) {
+        try {
+            File file = new File(fileName);
+            FileWriter writer = new FileWriter(fileName, true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.write(content);
             bufferedWriter.close();

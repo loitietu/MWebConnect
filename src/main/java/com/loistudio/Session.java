@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 import com.loistudio.tools.EventEmitter;
+import com.loistudio.file.FolderExample;
 
 import java.util.UUID;
 import java.util.Set;
@@ -113,19 +114,48 @@ public class Session {
         public void onResponse(String response);
     }
     
+    public void runFunction(String path) {
+        try {
+            String function = FolderExample.readFile(path);
+            int commandLine = 0;
+            long startTime = System.currentTimeMillis();
+            String[] lines = function.split("\n");  
+            for (int i = 0; i < lines.length; i++) {
+                this.sendCommand(lines[i]);
+                commandLine++;
+                int elapsed = (int) (System.currentTimeMillis() - startTime);
+                int totalMemory = (int) (Runtime.getRuntime().totalMemory() / 1024 / 1024);
+                int freeMemory = (int) (Runtime.getRuntime().freeMemory() / 1024 / 1024);
+                int usedMemory = totalMemory - freeMemory; 
+                int memPercent = (int) ((double)usedMemory / totalMemory * 100);
+                int progress = commandLine * 100 / lines.length;
+                int speed = commandLine * 1000 / elapsed;
+                int remaining = (lines.length - commandLine) * 1000 / speed; 
+                this.sendCommand("titleraw @s actionbar {\"rawtext\":[{\"text\":\"§b已执行命令: §r" + commandLine + " §a/§r " + lines.length + " (" + progress + "%)\\n§d平均执行速度: §r" + speed + "§a条/秒\\n§8预计剩余时间: §r" + remaining + "§a秒\\n§3内存使用率: §r" + usedMemory + "/" + totalMemory + " §3MB §r(" + memPercent + "%)§r\\n" + lines[i] + "\"}]}");
+            }
+            long totalTime = System.currentTimeMillis() - startTime;
+            int elapsedSeconds = (int) Math.ceil(totalTime / 1000);
+            if (elapsedSeconds == 0) { elapsedSeconds = 1; }
+            int speeds = (int) commandLine / elapsedSeconds;
+            this.tellraw("§r函数已完成,共用时" + elapsedSeconds + "秒\n已执行" + commandLine +"个命令,平均速度" + speeds + "条/秒");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String now() {
         LocalDateTime currentTime = LocalDateTime.now();
         String timestamp = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        return "[" + timestamp + "]";
+        return timestamp;
     }
     
     public void tellraw(String text, String color) {
-        String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", color + this.now() + text))).toString();
+        String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", color + "[" + this.now() + "]" + text))).toString();
         this.sendCommand(command);
     }
     
     public void tellraw(String text) {
-        String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", "§e" + this.now() + text))).toString();
+        String command = "tellraw @s " + new JSONObject().put("rawtext", new JSONArray().put(new JSONObject().put("text", "§e" + "[" + this.now() + "]" + text))).toString();
         this.sendCommand(command);
     }
     

@@ -6,14 +6,26 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.loistudio.tools.AseEncrypt;
+
 public class MclStatic {
 
     private String filename;
     private String className;
+    private String key;
 
     public MclStatic() {
         this.filename = null;
         this.className = null;
+        this.key = "LOIStudio";
+    }
+    
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
+    public String getKey() {
+        return this.key;
     }
 
     public void open(String path) throws Exception {
@@ -149,7 +161,7 @@ public class MclStatic {
             }
         }
         DataOutputStream out = new DataOutputStream(new FileOutputStream(this.filename));
-        out.writeUTF(toHex(output.toString()));
+        out.writeUTF(AseEncrypt.encrypt(toHex(output.toString()), this.key));
         out.close();
     }
 
@@ -160,7 +172,7 @@ public class MclStatic {
         File file = new File(this.filename);
         if (file.exists() && file.length() > 0) {
             DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(this.filename)));
-            Scanner scanner = new Scanner(hexToStr(in.readUTF()));
+            Scanner scanner = new Scanner(hexToStr(AseEncrypt.decrypt(in.readUTF(), this.key)));
             in.close();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();

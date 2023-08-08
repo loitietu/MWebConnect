@@ -102,6 +102,8 @@ event.on("message", new EventEmitter.Listener() {
 删除指定key
 - key {String} json文件中的key
 
+
+
 ### MclStatic
  - 再使用之前请确保已经导入了`com.loistudio.file.MclStatic`这个包
 #### open(String path) -> void

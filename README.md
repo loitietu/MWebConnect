@@ -103,8 +103,6 @@ Gets the value of the specified key.
 Delete the specified key
 - key {String} Key of json file
 
-
-
 ### MclStatic
  - Import the package `com.loistudio.file.MclStatic` before using it.
 #### open(String path) -> void

@@ -19,7 +19,6 @@ public class AseEncrypt {
         return Base64.getEncoder().encodeToString(encryptedBytes);   
     }
     
-    
     public static String decrypt(String input, String key) throws Exception {
         byte[] keyBytes = generateKey(key);  
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");   
@@ -31,7 +30,6 @@ public class AseEncrypt {
         byte[] decrypted = cipher.doFinal(decryptedBytes);
         return new String(decrypted);
     }
-    
     
     private static byte[] generateKey(String key) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");  

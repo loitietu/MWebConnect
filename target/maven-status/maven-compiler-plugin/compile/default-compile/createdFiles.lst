@@ -1,6 +1,7 @@
 com/loistudio/file/JsonObject.class
 com/loistudio/Server.class
 com/loistudio/Session$3.class
+com/loistudio/tools/McDownload.class
 com/loistudio/Block.class
 com/loistudio/Initialization$1.class
 com/loistudio/tools/AseEncrypt.class
@@ -13,6 +14,7 @@ com/loistudio/Session$1.class
 com/loistudio/tools/Logger.class
 com/loistudio/file/MclStatic.class
 com/loistudio/Initialization.class
+com/loistudio/tools/ProgressBar.class
 com/loistudio/Session.class
 com/loistudio/tools/EventEmitter.class
 com/loistudio/file/FolderExample.class

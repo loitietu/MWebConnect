@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Base64;
+import java.math.BigInteger;
 
 import com.loistudio.tools.AseEncrypt;
 
@@ -160,8 +162,8 @@ public class MclStatic {
                 output.append("}\n");
             }
         }
-        DataOutputStream out = new DataOutputStream(new FileOutputStream(this.filename));
-        out.writeUTF(AseEncrypt.encrypt(toHex(output.toString()), this.key));
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(this.filename));
+        out.writeObject(base64ToDecimal(AseEncrypt.encrypt(toHex(output.toString()), this.key)));
         out.close();
     }
 
@@ -171,8 +173,8 @@ public class MclStatic {
         data.put("classes", new HashMap<String, Object>());
         File file = new File(this.filename);
         if (file.exists() && file.length() > 0) {
-            DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(this.filename)));
-            Scanner scanner = new Scanner(hexToStr(AseEncrypt.decrypt(in.readUTF(), this.key)));
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(this.filename));
+            Scanner scanner = new Scanner(hexToStr(AseEncrypt.decrypt(decimalToBase64((BigInteger) in.readObject()), this.key)));
             in.close();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -205,7 +207,7 @@ public class MclStatic {
     }
 
     public String generateMixed(int n) {
-        String chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz123456789=";
+        String chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz123456789";
         StringBuilder sb = new StringBuilder(n);
         Random random = new Random(System.nanoTime());
         for(int i = 0; i < n; i++) {
@@ -239,5 +241,27 @@ public class MclStatic {
             bytes[i] = (byte) (n & 0xff);
         }
         return new String(bytes);
+    }
+    
+    public BigInteger base64ToDecimal(String base64Str) {
+        byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
+        BigInteger base10 = new BigInteger(decodedBytes);
+        return base10;
+    }
+    
+    public static String decimalToBase64(BigInteger num) {
+        byte[] bytes = num.toByteArray();
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+    
+    public BigInteger hexToDecimal(String hex) {
+        BigInteger decimal = new BigInteger(hex, 16);
+        return decimal;
+    }
+    
+    public String decimalToHex(String decimals) {
+        BigInteger decimal = new BigInteger(decimals);
+        String hex = decimal.toString(16);
+        return hex;
     }
 }

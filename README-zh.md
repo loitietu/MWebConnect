@@ -101,3 +101,43 @@ event.on("message", new EventEmitter.Listener() {
 #### delete(String key) -> void
 删除指定key
 - key {String} json文件中的key
+
+### MclStatic
+ - 再使用之前请确保已经导入了`com.loistudio.file.MclStatic`这个包
+#### open(String path) -> void
+创建一个MclStatic文件
+- path {String} 文件路径
+#### setKey(String key) -> void
+设置加密密钥
+- key {String} 密钥
+#### getKey() -> String
+获取当前加密密钥
+#### setConst(String key, String item) -> void
+设置一个常量
+- key {String} 常量名
+- item {String} 常量值
+#### getConst(String key) -> String
+获取常量值
+- key {String} 常量名
+#### deleteConst(String key) -> void
+删除指定的常量
+- key {String} 常量名
+#### addClass(String class) -> void
+创建一个存储类
+- class {String} 类名
+#### deleteClass(String class) -> void
+删除指定的存储类
+- class {String} 类名
+#### set(String class, String key, String item) -> void
+设置存储类变量
+- class {String} 类名
+- key {String} 变量名
+- item {item} 变量值
+#### get(String class, String key) -> void
+获取指定存储类中的变量值
+- class {String} 类名
+- key {String} 变量名
+#### deleteKey(String class, String key) -> void
+删除指定存储类中的变量
+- class {String} 类名
+- key {String} 变量名

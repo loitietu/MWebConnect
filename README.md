@@ -102,3 +102,43 @@ Gets the value of the specified key.
 #### delete(String key) -> void
 Delete the specified key
 - key {String} Key of json file
+
+### MclStatic
+ - Import the package `com.loistudio.file.MclStatic` before using it.
+#### open(String path) -> void
+Create a MclStatic file.
+- path {String} File path
+#### setKey(String key) -> void
+Set encryption key
+- key {String} encryption key
+#### getKey() -> String
+Get the current encryption key
+#### setConst(String key, String item) -> void
+Set a constant value.
+- key {String} Constant name
+- item {String} Constant value
+#### getConst(String key) -> String
+Get constant value
+- key {String} Constant name
+#### deleteConst(String key) -> void
+Delete the specified constant
+- key {String} Constant name
+#### addClass(String class) -> void
+Create a storage class
+- class {String} taxon
+#### deleteClass(String class) -> void
+Delete the specified storage class
+- class {String} taxon
+#### set(String class, String key, String item) -> void
+Set a storage class variable
+- class {String} taxon
+- key {String} variable name
+- item {item} variable value
+#### get(String class, String key) -> void
+Gets the variable value in the specified storage class
+- class {String} taxon
+- key {String} variable name
+#### deleteKey(String class, String key) -> void
+Deletes variables in the specified storage class
+- class {String} taxon
+- key {String} variable name

@@ -107,9 +107,11 @@ event.on("message", new EventEmitter.Listener() {
 #### open(String path) -> void
 创建一个MclStatic文件
 - path {String} 文件路径
-#### setKey(String key) -> void
+#### setKey(String key, String publicKey, String privateKey) -> void
 设置加密密钥
 - key {String} 密钥
+- publicKey {String} 公钥
+- privateKey {String} 私钥
 #### getKey() -> String
 获取当前加密密钥
 #### setConst(String key, String item) -> void

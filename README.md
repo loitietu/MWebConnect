@@ -108,9 +108,11 @@ Delete the specified key
 #### open(String path) -> void
 Create a MclStatic file.
 - path {String} File path
-#### setKey(String key) -> void
+#### setKey(String key, String publicKey, String privateKey) -> void
 Set encryption key
 - key {String} encryption key
+- publicKey {String} public key
+- privateKey {String} private key
 #### getKey() -> String
 Get the current encryption key
 #### setConst(String key, String item) -> void

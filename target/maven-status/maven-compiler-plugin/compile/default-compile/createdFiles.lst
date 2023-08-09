@@ -9,10 +9,12 @@ com/loistudio/Server$1.class
 com/loistudio/Player.class
 com/loistudio/tools/EventEmitter$Listener.class
 com/loistudio/Session$2.class
+com/loistudio/tools/DigitalSignature.class
 com/loistudio/Session$CommandCallback.class
 com/loistudio/Session$1.class
 com/loistudio/tools/Logger.class
 com/loistudio/file/MclStatic.class
+com/loistudio/file/DigitalSignatureException.class
 com/loistudio/Initialization.class
 com/loistudio/tools/ProgressBar.class
 com/loistudio/Session.class

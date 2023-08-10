@@ -6,6 +6,7 @@ import org.json.JSONArray;
 
 import com.loistudio.tools.EventEmitter;
 import com.loistudio.file.FolderExample;
+import com.loistudio.tools.Logger;
 
 import java.util.UUID;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class Session {
     static Map<String,String> Formation = new HashMap<>();
     
     public static EventEmitter event = new EventEmitter();
+    public static String log = "release";
     
     Session(WebSocket client) {
         this.client = client;
@@ -38,6 +40,7 @@ public class Session {
     }
     
     public void subscribe(String event, CommandCallback callback) {
+        if (this.log == "debug") { Logger.debug("Listen for events: " + event); }
         callback.onResponse(event);
         Set<CommandCallback> listeners = this.eventListeners.get(event);
         if (listeners == null) {
@@ -62,6 +65,7 @@ public class Session {
     }
     
     public void unsubscribe(String event, CommandCallback callback) {
+        if (this.log == "debug") { Logger.debug("To cancel listening for events: " + event); }
         Set<CommandCallback> listeners = this.eventListeners.get(event);     
         if (listeners == null) return;
         listeners.remove(callback);
@@ -86,6 +90,7 @@ public class Session {
     }
 
     public String sendCommand(String command, CommandCallback callback) {
+        if (this.log == "debug") { Logger.debug("Send command: " + command); }
         Map<String, Object> json = new HashMap<>();
         Map<String, Object> header = this.buildHeader("commandRequest");
         String requestId = (String) header.get("requestId");
@@ -115,6 +120,7 @@ public class Session {
     }
     
     public void runFunction(String path) {
+        if (this.log == "debug") { Logger.debug("Executive function"); }
         try {
             String function = FolderExample.readFile(path);
             int commandLine = 0;
@@ -160,6 +166,7 @@ public class Session {
     }
     
     public String shell(String cmd) {
+        if (this.log == "debug") { Logger.debug("Execute the shell command: " + cmd); }
         try {
             Runtime runtime = Runtime.getRuntime();
             Process proc = runtime.exec(cmd);

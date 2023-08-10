@@ -34,6 +34,10 @@ public class Logger {
     public static void warning(String msg) {
         log(msg, ANSI_YELLOW, "WARNING");
     }
+    
+    public static void debug(String msg) {
+        log(msg, ANSI_GREEN, "DEBUG");
+    }
 
     public static void log(String path, int level) {
         logFile = path;
@@ -59,6 +63,8 @@ public class Logger {
             return 1;
           case "INFO":
             return 0;
+          case "DEBUG":
+            return -1;
           default:
             return 0;
         }

@@ -9,6 +9,7 @@
 
 package com.loistudio;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -35,6 +36,10 @@ public abstract class Server {
     private String host = "127.0.0.1";
     private int port = 8080;
     private Map<String, Session> clientList = new HashMap<>();
+    private String model = "Release";
+    
+    public static int LOGGER_RELEASE = 0;
+    public static int LOGGER_DEBUG = 1;
     
     public abstract void connect(Session client);
     public abstract void close(Session client);
@@ -63,6 +68,7 @@ public abstract class Server {
     
             @Override
             public void onMessage(WebSocket conn, String message) {
+                if (Session.log == "debug") { Logger.debug("Client " + getIp(conn) + " sends a message: " + message); }
                 message(new Session(conn), message);
                 Session.event.emit("onJSON", message);
             }
@@ -81,12 +87,20 @@ public abstract class Server {
     }
     
     public void run() {
+        if (this.model == "Debug") { Session.log = "debug"; }
+        Logger.info("WebSocketServer mode: " + this.model);
         Logger.info("WebSocketServer started on " + host + ":" + port);
         server.start();
     }
 
     public void close() throws Exception {
+        Logger.info("Server shutdown");
         server.stop();
+    }
+    
+    public void setModel(int model) {
+        if (model == 0) { this.model = "Release"; }
+        else { this.model = "Debug"; }
     }
     
     public String getHost() {

@@ -113,6 +113,10 @@ Set encryption key
 - key {String} encryption key
 - publicKey {String} public key
 - privateKey {String} private key
+#### setArray(String arrayName, MclStaticArray array) -> void
+Set array object
+- arrayName {String} Array name
+- array {MclStaticArray} Array object
 #### getKey() -> String
 Get the current encryption key
 #### setConst(String key, String item) -> void
@@ -122,6 +126,9 @@ Set a constant value.
 #### getConst(String key) -> String
 Get constant value
 - key {String} Constant name
+#### getArray(String arrayName) -> MclStaticArray
+Get an array object
+- arrayName {String} Array name
 #### deleteConst(String key) -> void
 Delete the specified constant
 - key {String} Constant name
@@ -144,3 +151,6 @@ Gets the variable value in the specified storage class
 Deletes variables in the specified storage class
 - class {String} taxon
 - key {String} variable name
+#### deleteArray(String arrayName) -> void
+Delete array object
+- arrayName {String} Array name

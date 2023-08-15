@@ -96,6 +96,24 @@ public class FolderExample {
             e.printStackTrace();
         }
     }
+    
+    public static void deleteFolder(String path) {
+        try {
+            File folder = new File(path);
+            if(folder.isDirectory()) {
+                for (File file : folder.listFiles()) {
+                    if(file.isFile()) { 
+                        file.delete();
+                    } else if(file.isDirectory()) {
+                        deleteFolder(path + "/" + file.getName());
+                    }
+                }
+            }
+            folder.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void deleteFile(String path) {
         File file = new File(path);

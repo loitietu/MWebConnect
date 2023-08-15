@@ -31,6 +31,10 @@ public class Session {
         this.client = client;
     }
     
+    public String getIp() {
+        return client.getRemoteSocketAddress().getAddress().getHostAddress();
+    }
+    
     public void send(String msg) {
         this.client.send(msg);
     }
@@ -40,7 +44,7 @@ public class Session {
     }
     
     public void subscribe(String event, CommandCallback callback) {
-        if (this.log == "debug") { Logger.debug("Listen for events: " + event); }
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Listen for events: " + event); }
         callback.onResponse(event);
         Set<CommandCallback> listeners = this.eventListeners.get(event);
         if (listeners == null) {
@@ -65,7 +69,7 @@ public class Session {
     }
     
     public void unsubscribe(String event, CommandCallback callback) {
-        if (this.log == "debug") { Logger.debug("To cancel listening for events: " + event); }
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " To cancel listening for events: " + event); }
         Set<CommandCallback> listeners = this.eventListeners.get(event);     
         if (listeners == null) return;
         listeners.remove(callback);
@@ -90,7 +94,7 @@ public class Session {
     }
 
     public String sendCommand(String command, CommandCallback callback) {
-        if (this.log == "debug") { Logger.debug("Send command: " + command); }
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Send Command Request: " + command); }
         Map<String, Object> json = new HashMap<>();
         Map<String, Object> header = this.buildHeader("commandRequest");
         String requestId = (String) header.get("requestId");
@@ -120,7 +124,7 @@ public class Session {
     }
     
     public void runFunction(String path) {
-        if (this.log == "debug") { Logger.debug("Executive function"); }
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Executive function"); }
         try {
             String function = FolderExample.readFile(path);
             int commandLine = 0;

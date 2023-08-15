@@ -38,8 +38,8 @@ public abstract class Server {
     private Map<String, Session> clientList = new HashMap<>();
     private String model = "Release";
     
-    public static int LOGGER_RELEASE = 0;
-    public static int LOGGER_DEBUG = 1;
+    public static final int LOGGER_RELEASE = 0;
+    public static final int LOGGER_DEBUG = 1;
     
     public abstract void connect(Session client);
     public abstract void close(Session client);
@@ -101,6 +101,15 @@ public abstract class Server {
     public void setModel(int model) {
         if (model == 0) { this.model = "Release"; }
         else { this.model = "Debug"; }
+    }
+    
+    public void sendBroadClientCommand(String command) {
+        if (Session.log == "debug") { Logger.debug("Command sent to all connected clients: " + command); }
+        Set<Map.Entry<String, Session>> entries = clientList.entrySet();
+        for (Map.Entry<String, Session> entry : entries) {
+            Session session = entry.getValue();
+            session.sendCommand(command);
+        }
     }
     
     public String getHost() {

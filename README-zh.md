@@ -112,6 +112,10 @@ event.on("message", new EventEmitter.Listener() {
 - key {String} 密钥
 - publicKey {String} 公钥
 - privateKey {String} 私钥
+#### setArray(String arrayName, MclStaticArray array) -> void
+设置数组对像
+- arrayName {String} 数组名
+- array {MclStaticArray} 数组对像
 #### getKey() -> String
 获取当前加密密钥
 #### setConst(String key, String item) -> void
@@ -139,7 +143,13 @@ event.on("message", new EventEmitter.Listener() {
 获取指定存储类中的变量值
 - class {String} 类名
 - key {String} 变量名
+#### getArray(String arrayName) -> MclStaticArray
+获取数组对像
+- arrayName {String} 数组名
 #### deleteKey(String class, String key) -> void
 删除指定存储类中的变量
 - class {String} 类名
 - key {String} 变量名
+#### deleteArray(String arrayName) -> void
+删除数组对像
+- arrayName {String} 数组名

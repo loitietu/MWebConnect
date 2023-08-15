@@ -28,6 +28,7 @@ public class MclStatic {
         this.privatePath = "key/private.key";
         this.data.put("consts", new HashMap<String, Object>());
         this.data.put("classes", new HashMap<String, Object>());
+        this.data.put("array", new HashMap<String, Object>());
     }
     
     public void setKey(String key, String publicPath, String privatePath) {
@@ -73,6 +74,24 @@ public class MclStatic {
         } else {
             this.data = readData();
         }
+    }
+    
+    public void setArray(String arrayName, MclStaticArray array) throws Exception {
+        String arrayString = array.toString();
+        if (arrayName == null || arrayName.trim().equals("")) {
+            throw new IllegalArgumentException("Constant name is empty");
+        } else if (arrayString == null || arrayString.trim().equals("")) {
+            throw new IllegalArgumentException("Constant value is empty");
+        }
+        if (!this.data.containsKey("array")) {
+            this.data.put("array", new HashMap<String, Object>());
+        }
+        Map<String, Object> arrays = (Map<String, Object>)this.data.get("array");
+        if (!arrays.containsKey(arrayName)) {
+            arrays.put(arrayName, new HashMap<String, Object>());
+        }
+        Map<String, Object> arrayItem = (Map<String, Object>)arrays.get(arrayName);
+        arrayItem.put("value", arrayString);
     }
 
     public void setConst(String constName, String value) throws Exception {
@@ -160,6 +179,20 @@ public class MclStatic {
         }
         return null;
     }
+    
+    public MclStaticArray getArray(String arrayName) throws Exception {
+        if (arrayName == null || arrayName.trim().equals("")) {
+            throw new IllegalArgumentException("Constant name is empty");
+        }
+        if (this.data.containsKey("array")) {
+            Map<String, Object> arrays = (Map<String, Object>)this.data.get("array");
+            if (arrays.containsKey(arrayName)) {
+                Map<String, Object> arrayItem = (Map<String, Object>)arrays.get(arrayName);
+                return new MclStaticArray((String) arrayItem.get("value"));
+            }
+        }
+        return null;
+    }
 
     public void deleteClass(String className) throws Exception {
         if (className == null || className.trim().equals("")) {
@@ -195,6 +228,16 @@ public class MclStatic {
             consts.remove(constName);
         }
     }
+    
+    public void deleteArray(String arrayName) throws Exception {
+        if (arrayName == null || arrayName.trim().equals("")) {
+            throw new IllegalArgumentException("Constant name is empty");
+        }
+        if (this.data.containsKey("array")) {
+            Map<String, Object> arrays = (Map<String, Object>)this.data.get("array");
+            arrays.remove(arrayName);
+        }
+    }
 
     public void saveData() throws Exception {
         new Thread(() -> {
@@ -205,6 +248,13 @@ public class MclStatic {
                     for (String constName : consts.keySet()) {
                         Map<String, Object> constItem = (Map<String, Object>)consts.get(constName);
                         output.append("CONST ").append(constName).append(" ITEMS ").append(constItem.get("value")).append("\n");
+                    }
+                }
+                if (this.data.containsKey("array")) {
+                    Map<String, Object> arrays = (Map<String, Object>)this.data.get("array");
+                    for (String arrayName : arrays.keySet()) {
+                        Map<String, Object> arrayItem = (Map<String, Object>)arrays.get(arrayName);
+                        output.append("ARRAYLIST ").append(arrayName).append(" ITEMS ").append(arrayItem.get("value")).append("\n");
                     }
                 }
                 if (this.data.containsKey("classes")) { 
@@ -250,6 +300,13 @@ public class MclStatic {
                                 Map<String, Object> constItem = new HashMap<>();
                                 constItem.put("value", value);
                                 ((Map<String, Object>)this.data.get("consts")).put(constName, constItem);
+                            } else if (line.startsWith("ARRAYLIST")) {
+                                String[] parts = line.split(" ");
+                                String arrayName = parts[1];
+                                String value = parts[3];
+                                Map<String, Object> arrayItem = new HashMap<>();
+                                arrayItem.put("value", value);
+                                ((Map<String, Object>)this.data.get("array")).put(arrayName, arrayItem);
                             } else if (line.startsWith("CLASS")) {
                                 this.className = line.split(" ")[1];
                                 Map<String,Object> classItem = new HashMap<>();  

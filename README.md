@@ -67,6 +67,9 @@ This event is triggered when the player breaks the box.<br>
 #### onBlockBrokenJSON
 This event is triggered when the player breaks a box, but it will send a json string.<br>
 (String) json
+#### onCommandResponseJSON
+This event will be triggered after the client executes the command.<br>
+(String) json
  - Note: These events must be monitored with the event variable in the Session.
 
 ### Event module usage indication

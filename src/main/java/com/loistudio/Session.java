@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.CountDownLatch;
 import java.time.LocalDateTime;  
 import java.time.format.DateTimeFormatter;
 import java.lang.Runtime;
@@ -20,10 +21,9 @@ import java.io.*;
 
 public class Session {
     private WebSocket client;
-    Map<String,CommandCallback> responsers = new HashMap<>();
+    public static Map<String,CommandCallback> responsers = new HashMap<>();
     Map<String, Set<CommandCallback>> eventListeners = new HashMap<>();
-    static Map<String,String> Formation = new HashMap<>();
-    
+    public static Map<String,String> Formation = new HashMap<>();
     public static EventEmitter event = new EventEmitter();
     public static String log = "release";
     
@@ -105,17 +105,37 @@ public class Session {
         json.put("body", body);  
         this.responsers.put(requestId, callback);
         String jsonStr = new JSONObject(json).toString();
-        callback.onResponse(requestId);
         this.send(jsonStr);
         this.Formation.put(requestId, command);
         return requestId;
     }
     
-    public void sendCommand(String command) {
+    public String sendCommandSync(String command) {
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Send Command Sync Request: " + command); }
+        final String[] responser = new String[1];
+        final CountDownLatch latch = new CountDownLatch(1);
         this.sendCommand(command, new CommandCallback() {
+            @Override
+            public void onResponse(String response) {
+                responser[0] = response;
+                latch.countDown();
+            }
+        });
+        try {
+            latch.await();
+            return responser[0];
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public String sendCommand(String command) {
+        String id = this.sendCommand(command, new CommandCallback() {
             @Override
             public void onResponse(String response) {};
         });
+        return id;
     }
     
     @FunctionalInterface
@@ -124,7 +144,9 @@ public class Session {
     }
     
     public void runFunction(String path) {
-        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Executive function"); }
+        File file = new File(path);
+        String name = file.getName().substring(0, file.getName().indexOf("."));
+        if (this.log == "debug") { Logger.debug("Client " + this.getIp() + " Executive function: " + name); }
         try {
             String function = FolderExample.readFile(path);
             int commandLine = 0;
@@ -147,7 +169,7 @@ public class Session {
             int elapsedSeconds = (int) Math.ceil(totalTime / 1000);
             if (elapsedSeconds == 0) { elapsedSeconds = 1; }
             int speeds = (int) commandLine / elapsedSeconds;
-            this.tellraw("§r函数已完成,共用时" + elapsedSeconds + "秒\n已执行" + commandLine +"个命令,平均速度" + speeds + "条/秒");
+            this.tellraw("§r函数 " + name + " 已完成,共用时" + elapsedSeconds + "秒\n已执行" + commandLine +"个命令,平均速度" + speeds + "条/秒");
         } catch (Exception e) {
             e.printStackTrace();
         }

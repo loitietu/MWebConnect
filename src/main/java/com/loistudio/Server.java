@@ -53,24 +53,30 @@ public abstract class Server {
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 Initialization.init(new Session(conn));
-                connect(new Session(conn));
                 clientList.put(getIp(conn), new Session(conn));
                 Logger.info(getIp(conn) + " Client connection");
+                new Thread(() -> {
+                    connect(new Session(conn));
+                }).start();
             }
     
             @Override
             public void onClose(WebSocket conn, int code, String reason, boolean remote) {
                 Initialization.uninit(new Session(conn));
-                close(new Session(conn));
                 Logger.info(getIp(conn) + " The client was disconnected.");
                 removeSession(getIp(conn));
+                new Thread(() -> {
+                    close(new Session(conn));
+                });
             }
     
             @Override
             public void onMessage(WebSocket conn, String message) {
                 if (Session.log == "debug") { Logger.debug("Client " + getIp(conn) + " sends a message: " + message); }
-                message(new Session(conn), message);
                 Session.event.emit("onJSON", message);
+                new Thread(() -> {
+                    message(new Session(conn), message);
+                });
             }
     
             @Override
@@ -80,10 +86,12 @@ public abstract class Server {
     
             @Override
             public void onStart() {
+                server.setConnectionLostTimeout(3);
                 Logger.info("Server has been created.");
                 create();
             }
         };
+        server.setTcpNoDelay(true);
     }
     
     public void run() {

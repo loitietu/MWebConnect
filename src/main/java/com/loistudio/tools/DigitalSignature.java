@@ -40,13 +40,6 @@ public class DigitalSignature {
         return pair.getPrivate();
     }
     
-    public boolean verifySignature(String data, byte[] signature, PublicKey publicKey) throws Exception {
-        Signature sig = Signature.getInstance("SHA256withRSA");
-        sig.initVerify(publicKey);
-        sig.update(data.getBytes());
-        return sig.verify(signature);
-    }
-    
     public byte[] signData(String data, PrivateKey privateKey) throws Exception {
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privateKey);
@@ -78,6 +71,13 @@ public class DigitalSignature {
         return sig.verify(signature);
     }
     
+    public static boolean verifySignature(String data, byte[] signature, PublicKey publicKey) throws Exception {
+        Signature sig = Signature.getInstance("SHA256withRSA");
+        sig.initVerify(publicKey);
+        sig.update(data.getBytes());
+        return sig.verify(signature);
+    }
+    
     public static boolean verifySignature(String data, byte[] signature, byte[] publKeyBytes) throws Exception {
         X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publKeyBytes);
         KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -86,6 +86,13 @@ public class DigitalSignature {
         sig.initVerify(publicKey);
         sig.update(data.getBytes());
         return sig.verify(signature);
+    }
+    
+    public static PrivateKey getPrivateKey(String key) throws Exception {
+        byte[] privKeyBytes = Files.readAllBytes(Paths.get(key));  
+        PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(privKeyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return kf.generatePrivate(privKeySpec);
     }
 
     public static void initFile() throws Exception {

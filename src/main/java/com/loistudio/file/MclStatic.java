@@ -24,16 +24,14 @@ public class MclStatic {
         this.filename = null;
         this.className = null;
         this.key = "LOIStudio";
-        this.publicPath = "key/public.key";
         this.privatePath = "key/private.key";
         this.data.put("consts", new HashMap<String, Object>());
         this.data.put("classes", new HashMap<String, Object>());
         this.data.put("array", new HashMap<String, Object>());
     }
     
-    public void setKey(String key, String publicPath, String privatePath) {
+    public void setKey(String key, String privatePath) {
         this.key = key;
-        this.publicPath = publicPath;
         this.privatePath = privatePath;
     }
     
@@ -49,21 +47,15 @@ public class MclStatic {
         if (path == null || path.trim().equals("")) {
             throw new IllegalArgumentException("File path cannot be empty");  
         }
-        String paths = this.publicPath;
+        String paths = this.privatePath;
         int lastIndex = paths.lastIndexOf("/");
         String dir = paths.substring(0, lastIndex);
         FolderExample.makeDirs(dir); 
         File privateFile = new File(this.privatePath);
-        File publicFile = new File(this.publicPath);
         DigitalSignature sign = new DigitalSignature();
         if (!privateFile.exists()) {
             FileOutputStream fos = new FileOutputStream(this.privatePath);
             fos.write(sign.initPrivateKey().getEncoded());
-            fos.close();
-        }
-        if (!publicFile.exists()) {
-            FileOutputStream fos = new FileOutputStream(this.publicPath);
-            fos.write(sign.initPublicKey().getEncoded());
             fos.close();
         }
         this.filename = path;
@@ -288,7 +280,7 @@ public class MclStatic {
                     ObjectInputStream in = new ObjectInputStream(new FileInputStream(this.filename));
                     byte[] singdata = (byte[]) in.readObject();
                     String files = AseEncrypt.hexToStr(AseEncrypt.decryptTripleDES(AseEncrypt.decryptTripleASE192(decimalToBase64((BigInteger) in.readObject()), this.key), this.key));
-                    if (DigitalSignature.verifySignature(files, singdata, this.publicPath)) {
+                    if (DigitalSignature.verifySignature(files, singdata, DigitalSignature.privateKeyToPublicKey(DigitalSignature.getPrivateKey(this.privatePath)))) {
                         Scanner scanner = new Scanner(files);
                         in.close();
                         while (scanner.hasNextLine()) {

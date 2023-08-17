@@ -17,20 +17,27 @@ public class Initialization {
                 JSONObject json = new JSONObject(args[0].toString());
                 JSONObject body = json.getJSONObject("body");
                 JSONObject header = json.getJSONObject("header");
-                if (header.has("eventName") && body.has("type")) {
+                if (header.has("eventName") && body.has("type") && header.getString("messagePurpose") == "event") {
                     if ("PlayerMessage".equals(header.getString("eventName")) && "chat".equals(body.getString("type"))) {
                         if (Session.log == "debug") { Logger.debug("PlayerMessage event is executed: " + args[0]); }
-                        Session.event.emit("onMessageJSON", args[0]);
+                        Session.event.emit("onMessageJSON", (String) args[0]);
                         Session.event.emit("onMessage", body.getString("sender"), body.getString("message"));
                     } else if ("BlockPlaced".equals(header.getString("eventName"))) {
                         if (Session.log == "debug") { Logger.debug("BlockPlaced event is executed: " + args[0]); }
-                        Session.event.emit("onBlockPlacedJSON", args[0]);
+                        Session.event.emit("onBlockPlacedJSON", (String) args[0]);
                         Session.event.emit("onBlockPlaced", new Player(body.getJSONObject("player"), client), new Block(body.getJSONObject("block")));
                     } else if ("BlockBroken".equals(header.getString("eventName"))) {
                         if (Session.log == "debug") { Logger.debug("BlockBroken event is executed: " + args[0]); }
-                        Session.event.emit("onBlockBrokenJSON", args[0]);
+                        Session.event.emit("onBlockBrokenJSON", (String) args[0]);
                         Session.event.emit("onBlockBroken", new Player(body.getJSONObject("player"), client), new Block(body.getJSONObject("block")));
                     }
+                } else if ("commandResponse".equals(header.getString("messagePurpose"))) {
+                    if (Session.log == "debug") { Logger.debug("Command callback event trigger: " + args[0]); }
+                    Session.Formation.remove(header.getString("requestId"));
+                    Session.CommandCallback callback = Session.responsers.get(header.getString("requestId"));
+                    callback.onResponse((String) args[0]);
+                    Session.responsers.remove(header.getString("requestId"));
+                    Session.event.emit("onCommandResponseJSON", (String) args[0]);
                 }
             }
         });

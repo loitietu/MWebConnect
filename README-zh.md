@@ -67,6 +67,9 @@ server.run();
 #### onBlockBrokenJSON
 当玩家破坏方块时将触发这个事件，但是它会发送一个json字符串。<br>
 (String) json
+#### onCommandResponseJSON
+这个事件会在客户端执行命令时触发。<br>
+(String) json
  - 注意: 必须使用Session中的event变量来监听这些事件
 
 ### 事件模块使用示范

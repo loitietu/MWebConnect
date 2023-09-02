@@ -7,7 +7,6 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.io.*;
-import java.util.Base64;
 import java.nio.file.*;
 
 public class DigitalSignature {
@@ -28,8 +27,7 @@ public class DigitalSignature {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         RSAPrivateCrtKey privk = (RSAPrivateCrtKey)key;
         RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(privk.getModulus(), privk.getPublicExponent());
-        PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-        return publicKey;
+        return keyFactory.generatePublic(publicKeySpec);
     }
     
     public PublicKey initPublicKey() throws Exception {
@@ -44,8 +42,7 @@ public class DigitalSignature {
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privateKey);
         sig.update(data.getBytes());
-        byte[] signature = sig.sign();
-        return signature; 
+        return sig.sign();
     }
 
     public static byte[] signData(String data, String privateKeyFile) throws Exception {
@@ -56,8 +53,7 @@ public class DigitalSignature {
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privKey);
         sig.update(data.getBytes());
-        byte[] signature = sig.sign();
-        return signature;
+        return sig.sign();
     }
     
     public static boolean verifySignature(String data, byte[] signature, String publicKeyFile) throws Exception {

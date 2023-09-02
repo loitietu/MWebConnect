@@ -87,8 +87,7 @@ public class ZipFileManager {
             while ((bytesRead = zipInputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
-            byte[] fileBytes = outputStream.toByteArray();
-            return fileBytes;
+            return outputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -120,8 +119,7 @@ public class ZipFileManager {
         JsonObject json = new JsonObject();
         json.open("DIGITAL-SIGNATURE/SIGN.json");
         DigitalSignature sign = new DigitalSignature();
-        for (int i = 0;i < fileList.size();i++) {
-            String fileName = fileList.get(i);
+        for (String fileName : fileList) {
             String content = this.getFileContent(fileName);
             String signData = Base64.getEncoder().encodeToString(sign.signData(content, privateKey));
             json.set(fileName, signData);
@@ -137,7 +135,7 @@ public class ZipFileManager {
             String content = this.getFileContent(key);
             byte[] sign = Base64.getDecoder().decode(json.getString(key));
             byte[] publicKey = this.getFileContentByte("DIGITAL-SIGNATURE/public.key");
-            if (DigitalSignature.verifySignature(content, sign, publicKey) == false) {
+            if (!DigitalSignature.verifySignature(content, sign, publicKey)) {
                 return false;
             }
         }

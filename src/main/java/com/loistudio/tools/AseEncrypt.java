@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.nio.*;
 
@@ -42,8 +41,7 @@ public class AseEncrypt {
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] encryptData = cipher.doFinal(data.getBytes());
-        String base64 = Base64.getEncoder().encodeToString(encryptData);
-        return base64;   
+        return Base64.getEncoder().encodeToString(encryptData);
     }
         
     public static String decryptDES(String data, String key) throws Exception{
@@ -143,14 +141,10 @@ public class AseEncrypt {
     
     public static String toHex(String str) {
         char[] chars = "0123456789ABCDEF".toCharArray();
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         byte[] bs = str.getBytes();
-        int bit;
         for (int i = 0; i < bs.length; i++) {
-            bit = (bs[i] & 0x0f0) >> 4;
-            sb.append(chars[bit]);
-            bit = bs[i] & 0x0f;
-            sb.append(chars[bit]);
+            sb.append(chars[i]);
         }
         return sb.toString().trim();
     }

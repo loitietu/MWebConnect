@@ -1,7 +1,6 @@
 import com.loistudio.Server;
 import com.loistudio.Session;
 import com.loistudio.tools.EventEmitter;
-import com.loistudio.file.MclStatic;
 
 public class main extends Server {
     @Override
@@ -36,10 +35,5 @@ public class main extends Server {
         server.setModel(LOGGER_RELEASE);
         server.newServer("127.0.0.1", 24455);
         server.run();
-        MclStatic mcl = new MclStatic();
-        mcl.open("Test.mcl");
-        mcl.addClass("Test");
-        mcl.set("Test", "Test", "Test");
-        mcl.close();
     }
 }

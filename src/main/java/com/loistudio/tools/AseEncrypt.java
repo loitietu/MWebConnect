@@ -140,13 +140,12 @@ public class AseEncrypt {
     }
     
     public static String toHex(String str) {
-        char[] chars = "0123456789ABCDEF".toCharArray();
         StringBuilder sb = new StringBuilder();
-        byte[] bs = str.getBytes();
-        for (int i = 0; i < bs.length; i++) {
-            sb.append(chars[i]);
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            sb.append(Integer.toHexString((int) c));
         }
-        return sb.toString().trim();
+        return sb.toString().toUpperCase().trim();
     }
     
     public static String hexToStr(String hexStr) {

@@ -44,7 +44,11 @@ public class MclStatic {
     }
 
     public void open(String path) throws Exception {
+<<<<<<< HEAD
         if (path == null || path.trim().isEmpty()) {
+=======
+        if (path == null || path.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("File path cannot be empty");  
         }
         String paths = this.privatePath;
@@ -70,9 +74,15 @@ public class MclStatic {
     
     public void setArray(String arrayName, MclStaticArray array) throws Exception {
         String arrayString = array.toString();
+<<<<<<< HEAD
         if (arrayName == null || arrayName.trim().isEmpty()) {
             throw new IllegalArgumentException("Constant name is empty");
         } else if (arrayString == null || arrayString.trim().isEmpty()) {
+=======
+        if (arrayName == null || arrayName.trim().equals("")) {
+            throw new IllegalArgumentException("Constant name is empty");
+        } else if (arrayString == null || arrayString.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Constant value is empty");
         }
         if (!this.data.containsKey("array")) {
@@ -87,9 +97,15 @@ public class MclStatic {
     }
 
     public void setConst(String constName, String value) throws Exception {
+<<<<<<< HEAD
         if (constName == null || constName.trim().isEmpty()) {
             throw new IllegalArgumentException("Constant name is empty");
         } else if (value == null || value.trim().isEmpty()) {
+=======
+        if (constName == null || constName.trim().equals("")) {
+            throw new IllegalArgumentException("Constant name is empty");
+        } else if (value == null || value.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Constant value is empty");
         }
         if (!this.data.containsKey("consts")) {
@@ -104,7 +120,11 @@ public class MclStatic {
     }
 
     public void addClass(String className) throws Exception {
+<<<<<<< HEAD
         if (className == null || className.trim().isEmpty()) {
+=======
+        if (className == null || className.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Class name is empty");
         }
         if (!this.data.containsKey("classes")) {
@@ -117,11 +137,19 @@ public class MclStatic {
     }
 
     public void set(String className, String key, String value) throws Exception {
+<<<<<<< HEAD
         if (className == null || className.trim().isEmpty()) {
             throw new IllegalArgumentException("Class name is empty");
         } else if (key == null || key.trim().isEmpty()) {
             throw new IllegalArgumentException("Class key is empty");
         } else if (value == null || value.trim().isEmpty()) {
+=======
+        if (className == null || className.trim().equals("")) {
+            throw new IllegalArgumentException("Class name is empty");
+        } else if (key == null || key.trim().equals("")) {
+            throw new IllegalArgumentException("Class key is empty");
+        } else if (value == null || value.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Class value is empty");
         }
         if (!this.data.containsKey("classes")) {
@@ -140,9 +168,15 @@ public class MclStatic {
     }
 
     public String get(String className, String key) throws Exception {
+<<<<<<< HEAD
         if (className == null || className.trim().isEmpty()) {
             throw new IllegalArgumentException("Class name is empty");
         } else if (key == null || key.trim().isEmpty()) {
+=======
+        if (className == null || className.trim().equals("")) {
+            throw new IllegalArgumentException("Class name is empty");
+        } else if (key == null || key.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Class key is empty");
         }
         if (this.data.containsKey("classes")) {
@@ -159,7 +193,11 @@ public class MclStatic {
     }
 
     public String getConst(String constName) throws Exception {
+<<<<<<< HEAD
         if (constName == null || constName.trim().isEmpty()) {
+=======
+        if (constName == null || constName.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Constant name is empty");
         }
         if (this.data.containsKey("consts")) {
@@ -187,7 +225,11 @@ public class MclStatic {
     }
 
     public void deleteClass(String className) throws Exception {
+<<<<<<< HEAD
         if (className == null || className.trim().isEmpty()) {
+=======
+        if (className == null || className.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Class name is empty");
         }
         if (this.data.containsKey("classes")) {
@@ -197,9 +239,15 @@ public class MclStatic {
     }
 
     public void deleteKey(String className, String key) throws Exception {
+<<<<<<< HEAD
         if (className == null || className.trim().isEmpty()) {
             throw new IllegalArgumentException("Class name is empty");
         } else if (key == null || key.trim().isEmpty()) {
+=======
+        if (className == null || className.trim().equals("")) {
+            throw new IllegalArgumentException("Class name is empty");
+        } else if (key == null || key.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Class key is empty");
         }
         if (this.data.containsKey("classes")) {
@@ -212,7 +260,11 @@ public class MclStatic {
     }  
 
     public void deleteConst(String constName) throws Exception {
+<<<<<<< HEAD
         if (constName == null || constName.trim().isEmpty()) {
+=======
+        if (constName == null || constName.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Constant name is empty");
         }
         if (this.data.containsKey("consts")) {
@@ -222,7 +274,11 @@ public class MclStatic {
     }
     
     public void deleteArray(String arrayName) throws Exception {
+<<<<<<< HEAD
         if (arrayName == null || arrayName.trim().isEmpty()) {
+=======
+        if (arrayName == null || arrayName.trim().equals("")) {
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
             throw new IllegalArgumentException("Constant name is empty");
         }
         if (this.data.containsKey("array")) {
@@ -345,7 +401,12 @@ public class MclStatic {
     
     public BigInteger base64ToDecimal(String base64Str) {
         byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
+<<<<<<< HEAD
         return new BigInteger(decodedBytes);
+=======
+        BigInteger base10 = new BigInteger(decodedBytes);
+        return base10;
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
     }
     
     public static String decimalToBase64(BigInteger num) {
@@ -354,12 +415,22 @@ public class MclStatic {
     }
     
     public BigInteger hexToDecimal(String hex) {
+<<<<<<< HEAD
         return new BigInteger(hex, 16);
+=======
+        BigInteger decimal = new BigInteger(hex, 16);
+        return decimal;
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
     }
     
     public String decimalToHex(String decimals) {
         BigInteger decimal = new BigInteger(decimals);
+<<<<<<< HEAD
         return decimal.toString(16);
+=======
+        String hex = decimal.toString(16);
+        return hex;
+>>>>>>> 27418a63daf9f27bd58e6546e4a591d083ed45d3
     }
 }
 
